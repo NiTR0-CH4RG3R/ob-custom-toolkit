@@ -4,7 +4,7 @@ import org.apache.synapse.MessageContext;
 import org.apache.synapse.mediators.AbstractMediator;
 
 /**
- * Sample mediator implementation
+ * Sample mediator implementation.
  */
 public class SampleMediator extends AbstractMediator {
 

@@ -18,7 +18,7 @@ import com.wso2.openbanking.accelerator.consent.extensions.manage.model.ConsentM
 import com.wso2.openbanking.accelerator.consent.extensions.manage.model.ConsentManageHandler;
 
 /**
- * Consent Manage handler implementation for 
+ * Consent Manage handler implementation for .
  */
 public class SampleConsentManageHandler implements ConsentManageHandler {
 

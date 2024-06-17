@@ -18,7 +18,7 @@ import org.wso2.carbon.identity.oauth2.dto.OAuth2AccessTokenRespDTO;
 import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 
 /**
- * OB specific client credentials code grant handler
+ * OB specific client credentials code grant handler.
  */
 public class SampleOBClientCredentialsGrantHandler extends OBClientCredentialsGrantHandler {
 

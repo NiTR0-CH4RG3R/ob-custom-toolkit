@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * The Sample implementation of servlet extension
+ * The Sample implementation of servlet extension.
  */
 public class OBSampleAuthServletImpl implements OBAuthServletInterface {
 

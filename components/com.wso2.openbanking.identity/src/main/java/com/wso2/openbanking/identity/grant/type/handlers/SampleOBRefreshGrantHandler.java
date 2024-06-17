@@ -18,7 +18,7 @@ import org.wso2.carbon.identity.oauth2.dto.OAuth2AccessTokenRespDTO;
 import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 
 /**
- * OB specific refresh grant handler
+ * OB specific refresh grant handler.
  */
 public class SampleOBRefreshGrantHandler extends OBRefreshGrantHandler {
 

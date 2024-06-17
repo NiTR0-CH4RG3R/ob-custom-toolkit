@@ -23,7 +23,7 @@ import org.wso2.carbon.identity.oauth2.token.OAuthTokenReqMessageContext;
 import java.util.Map;
 
 /**
- * Sample claim provider implementation
+ * Sample claim provider implementation.
  */
 public class OBSampleClaimProvider extends OBClaimProvider {
 

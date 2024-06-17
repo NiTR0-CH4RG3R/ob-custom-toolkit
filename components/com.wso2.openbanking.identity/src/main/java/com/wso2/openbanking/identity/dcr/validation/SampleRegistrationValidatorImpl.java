@@ -19,7 +19,7 @@ import com.wso2.openbanking.accelerator.identity.dcr.validation.DefaultRegistrat
 import java.util.Map;
 
 /**
- * Sample implementation for dcr registration VALIDATOR class
+ * Sample implementation for dcr registration VALIDATOR class.
  */
 public class SampleRegistrationValidatorImpl extends DefaultRegistrationValidatorImpl {
 

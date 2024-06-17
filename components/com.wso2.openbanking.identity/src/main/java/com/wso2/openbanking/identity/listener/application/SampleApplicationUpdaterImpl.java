@@ -22,7 +22,7 @@ import java.util.Map;
 
 /**
  * Default implementation class for AbstractApplicationUpdater which should be extended for spec specific
- * tasks
+ * tasks.
  */
 public class SampleApplicationUpdaterImpl extends ApplicationUpdaterImpl {
 

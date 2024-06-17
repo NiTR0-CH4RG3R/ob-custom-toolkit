@@ -17,8 +17,8 @@ import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIRequestConte
 import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIResponseContext;
 
 /**
- * API Resource Access Validation executor
- * This executor validates the grant type
+ * API Resource Access Validation executor.
+ * This executor validates the grant type.
  */
 public class SampleOpenBankingGatewayExecutor implements OpenBankingGatewayExecutor {
 
