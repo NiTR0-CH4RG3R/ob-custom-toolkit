@@ -40,8 +40,8 @@ public class SampleRegistrationValidatorImpl extends DefaultRegistrationValidato
         ValidatorUtils.getValidationViolations(registrationRequest);
 
         // Check whether the SSA parameters contain a parameter named logo_uri. If not throw the exception.
-        if (!registrationRequest.getSsaParameters().containsKey("logoUri")) {
-            throw new DCRValidationException(DCRCommonConstants.INVALID_SSA, "SSA must contain a logoUri parameter");
+        if (!registrationRequest.getSsaParameters().containsKey("logo_uri")) {
+            throw new DCRValidationException(DCRCommonConstants.INVALID_SSA, "SSA must contain a logo_uri parameter");
         }
     }
 
