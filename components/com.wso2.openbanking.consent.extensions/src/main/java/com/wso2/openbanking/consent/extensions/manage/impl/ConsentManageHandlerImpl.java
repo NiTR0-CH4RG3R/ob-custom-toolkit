@@ -5,10 +5,13 @@ import com.wso2.openbanking.accelerator.consent.extensions.common.ConsentExcepti
 import com.wso2.openbanking.accelerator.consent.extensions.common.ResponseStatus;
 import com.wso2.openbanking.accelerator.consent.extensions.manage.impl.DefaultConsentManageHandler;
 import com.wso2.openbanking.accelerator.consent.extensions.manage.model.ConsentManageData;
+import com.wso2.openbanking.accelerator.consent.mgt.dao.models.ConsentAttributes;
 import com.wso2.openbanking.accelerator.consent.mgt.service.ConsentCoreService;
 import com.wso2.openbanking.accelerator.consent.mgt.service.impl.ConsentCoreServiceImpl;
 import net.minidev.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -42,7 +45,7 @@ public class ConsentManageHandlerImpl extends DefaultConsentManageHandler {
         boolean isOneOffConsent = (boolean) requestPayload.get("is_one_off_consent");
 
         HashMap<String, String> additionalAttributes = new HashMap<>();
-        additionalAttributes.put( "is_one_off_consent", String.valueOf(isOneOffConsent) );
+        additionalAttributes.put("is_one_off_consent", String.valueOf(isOneOffConsent));
 
         // The DefaultConsentManageHandler class stores the newly created consentId in the Data.ConsentId in the
         // response payload in the consentManageData.
@@ -69,10 +72,40 @@ public class ConsentManageHandlerImpl extends DefaultConsentManageHandler {
         //          maintain a separate <String, Object> map, but it seems like a way too much overkill for this task.
         //          This is just a note for the future.
 
-        data.put("is_one_off_consent", isOneOffConsent);
+        data.appendField("is_one_off_consent", isOneOffConsent);
         responsePayload.replace("Data", data);
         consentManageData.setResponsePayload(responsePayload);
     }
 
+    @Override
+    public void handleGet(ConsentManageData consentManageData) throws ConsentException {
 
+        String consentId = "";
+
+        // Retrieve the consentId from the request path
+        if (consentManageData.getRequestPath().startsWith("account-access-consents/")) {
+            consentId = consentManageData.getRequestPath().split("account-access-consents/")[1];
+        } else {
+            throw new ConsentException(ResponseStatus.BAD_REQUEST, "Request path invalid");
+        }
+
+        // Return the 'is_one_off_consent' attribute from the database
+        boolean isOneOffConsent = false;
+        ConsentCoreService consentCoreService = new ConsentCoreServiceImpl();
+
+        try {
+            ConsentAttributes consentAttributes = consentCoreService.getConsentAttributes(
+                    consentId, new ArrayList<String>(Collections.singletonList("is_one_off_consent")));
+            isOneOffConsent = Boolean.parseBoolean(consentAttributes.getConsentAttributes().get("is_one_off_consent"));
+        } catch (ConsentManagementException e) {
+            throw new ConsentException(ResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+
+        // Append the attribute to the response
+        JSONObject responsePayload = (JSONObject) consentManageData.getResponsePayload();
+        JSONObject data = (JSONObject) responsePayload.get("Data");
+        data.appendField("is_one_off_consent", isOneOffConsent);
+        responsePayload.replace("Data", data);
+        consentManageData.setResponsePayload(responsePayload);
+    }
 }
