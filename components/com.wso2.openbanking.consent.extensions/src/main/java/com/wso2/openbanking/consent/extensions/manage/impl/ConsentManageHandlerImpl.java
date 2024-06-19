@@ -39,11 +39,10 @@ public class ConsentManageHandlerImpl extends DefaultConsentManageHandler {
                     "is_one_off_consent attribute is missing from the payload.");
         }
 
+        boolean isOneOffConsent = (boolean) requestPayload.get("is_one_off_consent");
+
         HashMap<String, String> additionalAttributes = new HashMap<>();
-        additionalAttributes.put(
-                "is_one_off_consent",
-                String.valueOf((boolean) requestPayload.get("is_one_off_consent"))
-        );
+        additionalAttributes.put( "is_one_off_consent", String.valueOf(isOneOffConsent) );
 
         // The DefaultConsentManageHandler class stores the newly created consentId in the Data.ConsentId in the
         // response payload in the consentManageData.
@@ -61,5 +60,19 @@ public class ConsentManageHandlerImpl extends DefaultConsentManageHandler {
         } catch (ConsentManagementException e) {
             throw new ConsentException(ResponseStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
+
+        // We must append the additional attributes to the response as well
+        // NOTE :   It is better if we could add the custom attributes all at once from using something like the
+        //          'additionalAttributes' variable. So, we will only have to worry about adding them to the map above,
+        //          and they will be automatically appended to the response. But the problem is 'additionalAttributes'
+        //          is a <String, String> hash map. And all the type information of the value will be lost. We could
+        //          maintain a separate <String, Object> map, but it seems like a way too much overkill for this task.
+        //          This is just a note for the future.
+
+        data.put("is_one_off_consent", isOneOffConsent);
+        responsePayload.replace("Data", data);
+        consentManageData.setResponsePayload(responsePayload);
     }
+
+
 }
