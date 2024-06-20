@@ -49,6 +49,10 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.wso2</groupId>
+            <artifactId>com.wso2.openbanking.accelerator.common</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
