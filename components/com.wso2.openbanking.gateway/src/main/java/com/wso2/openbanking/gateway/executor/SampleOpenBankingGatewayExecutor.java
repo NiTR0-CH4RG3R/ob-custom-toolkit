@@ -12,9 +12,17 @@
 
 package com.wso2.openbanking.gateway.executor;
 
+import com.wso2.openbanking.accelerator.common.error.OpenBankingErrorCodes;
 import com.wso2.openbanking.accelerator.gateway.executor.core.OpenBankingGatewayExecutor;
 import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIRequestContext;
 import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIResponseContext;
+import com.wso2.openbanking.accelerator.gateway.executor.model.OpenBankingExecutorError;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+
 
 /**
  * API Resource Access Validation executor.
@@ -24,6 +32,36 @@ public class SampleOpenBankingGatewayExecutor implements OpenBankingGatewayExecu
 
     @Override
     public void preProcessRequest(OBAPIRequestContext obapiRequestContext) {
+        // TASK :   - You should only allow API calls that contain the AISP role in the provided token.
+        //          - You should return a proper error message with 403 Forbidden as the HTTP Status.
+
+        // The payload is a json object. So I'm checking if the payload contains an aisp_role attribute in the payload.
+
+        // Convert the payload string to a org.json.simple.JSONObject object.
+        JSONObject modifiedPayloadJSON = null;
+
+        try {
+            modifiedPayloadJSON = (JSONObject) (new JSONParser()).parse(obapiRequestContext.getModifiedPayload());
+        } catch (ParseException e) {
+            ArrayList<OpenBankingExecutorError> errors = new ArrayList<>();
+            errors.add(new OpenBankingExecutorError(OpenBankingErrorCodes.SERVER_ERROR_CODE,
+                    "Internal server error", e.getMessage(), OpenBankingErrorCodes.SERVER_ERROR_CODE));
+            obapiRequestContext.setError(true);
+            obapiRequestContext.setErrors(errors);
+            return;
+        }
+
+        // Check if an aisp_role attribute is present in the payload
+        if (!modifiedPayloadJSON.containsKey("aisp_role")) {
+            ArrayList<OpenBankingExecutorError> errors = new ArrayList<>();
+            errors.add(new OpenBankingExecutorError(OpenBankingErrorCodes.FORBIDDEN_CODE,
+                    "Forbidden", "aisp_role is required in the payload.", OpenBankingErrorCodes.FORBIDDEN_CODE));
+            obapiRequestContext.setError(true);
+            obapiRequestContext.setErrors(errors);
+            return;
+        }
+
+
 
     }
 
