@@ -20,17 +20,23 @@ import com.wso2.openbanking.accelerator.gateway.executor.model.OBAPIResponseCont
 import java.util.List;
 
 /**
- * Sample implementation of Default Request Router.
+ * This is just for fun. I wanted to forward all the AISP api calls for my own api flow with a custom gateway executor.
  */
 public class SampleDefaultRequestRouter extends DefaultRequestRouter {
 
     @Override
     public List<OpenBankingGatewayExecutor> getExecutorsForRequest(OBAPIRequestContext requestContext) {
+        if (requestContext.getMsgInfo().getResource().contains("/aisp") && this.getExecutorMap().containsKey("AISP")) {
+            return this.getExecutorMap().get("AISP");
+        }
         return super.getExecutorsForRequest(requestContext);
     }
 
     @Override
     public List<OpenBankingGatewayExecutor> getExecutorsForResponse(OBAPIResponseContext responseContext) {
+        if (responseContext.getMsgInfo().getResource().contains("/aisp") && this.getExecutorMap().containsKey("AISP")) {
+            return this.getExecutorMap().get("AISP");
+        }
         return super.getExecutorsForResponse(responseContext);
     }
 }
